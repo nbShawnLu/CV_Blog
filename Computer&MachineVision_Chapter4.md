@@ -40,5 +40,40 @@
 ##4.5 阈值选择更完全的方式
 介绍三种被广泛应用且具有严密的数学依据的方式。
 1：基于方差的阈值化。
+假设图片中有L个级别的灰度的点，用$n_i$表示第i级的点的个数，总点数$N=\sum_{i=1}^L{n_i}$，每个灰度的概率$p_i=\frac{n_i}{N}$,$\sum_{i=1}^L{p_i}=1$。
+阈值取k，将点分为两类，得类中方差$\sigma_B^2$和总方差$\sigma_T^2$：
+$\sigma_B^2=\pi_0(\mu_0-\mu_t)^2+\pi_1(\mu_1-\mu_t)^2$
+$\sigma_T^2=\sum_{i=1}^L{(i-\mu_T)^2p_i}$
+其中：
+$\pi_0=\sum_{i=1}^k{p_i}$
+$\pi_1=\sum_{i=k+1}^L{p_i}=1-\pi_0$
+$\mu_0=\sum_{i=1}^k{ip_i}/\pi_0$
+$\mu_1=\sum_{i=k+1}^L{ip_i}/\pi_1$
+$\mu_T=\sum_{i=1}^L{ip_i}$
+化简得：
+$\sigma_B^2=\pi_0\pi_1(\mu_1-\mu_0)^2$
+取阈值k使$\eta=\frac{\sigma_B^2}{\sigma_T^2}$最小。
+由于总方差一定，只需找类内方差最小的k。
 2：基于熵的阈值化。
+同样的，阈值k将灰度分为两类，概率分布：
+A：$\frac{p_1}{Pk},\frac{p_2}{Pk},...,\frac{p_k}{Pk}$
+B：$\frac{p_{k+1}}{1-Pk},\frac{p_{k+2}}{1-Pk},...,\frac{p_L}{1-Pk}$
+其中：
+$P_k=\sum_{i=1}^k{p_i}$
+$1-P_k=\sum_{i=k+1}^L{p_i}$
+各自的熵为：
+$H(A)=-\sum_{i=1}^k{\frac{p_i}{P_k}ln\frac{p_i}{P_k}}$
+$H(B)=-\sum_{i=k+1}^L{\frac{p_i}{1-P_k}ln\frac{p_i}{1-P_k}}$
+取阈值k使总熵$H(k)=H(A)+H(B)$最大。
 3：极大似然阈值化。
+用已有的分布匹配亮度直方图，例如高斯分布：
+$p_i(x)=\frac{1}{(2\pi\sigma_i^2)^{1/2}}e^{-\frac{(x-\mu_i)^2}{2\sigma_i^2}}$
+##4.6 全局谷部求阈值（GVM）
+$s(u)=u$  $if\ u>0$
+$s(u)=0$  $if\ u<=0$
+$F_j=max_{i,k}\{\frac{1}{2}[s(h_i-h_j)+s(h_k-h_j)]\}$
+当有很多峰谷时，替换为：
+$K_j=max_{i,k}\{s(h_i-h_j)s(h_k-h_j)]^{\frac{1}{2}[}\}$
+##4.7 GVM的实践结果
+##4.8 直方图凹度分析
+##4.9 结论
